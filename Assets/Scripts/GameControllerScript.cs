@@ -8,6 +8,7 @@ public class GameControllerScript : MonoBehaviour {
     public int gridSize;
     public Sprite[] spritesObj;
     public GameObject blockPrefab;
+    public Sprite cursor;
 
     private int[,] grid;
     public int bombCount = 0;
@@ -17,6 +18,7 @@ public class GameControllerScript : MonoBehaviour {
     private float time = 0f;
 
     void Start() {
+        Cursor.SetCursor(cursor.texture, new Vector2(0f,0f), CursorMode.Auto);
 
         LoadMap();
     }

@@ -143,3 +143,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   obj: {fileID: 0}
   flag: {fileID: 21300022, guid: 9a0359188a2b7dd4797b4fe3e24efc51, type: 3}
+  particle: {fileID: 2998592078570437341, guid: 7ba4d54f2b3fc7a47b3f374cacf162cb,
+    type: 3}

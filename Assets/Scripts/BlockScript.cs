@@ -6,7 +6,8 @@ public class BlockScript : MonoBehaviour {
 
     public Sprite obj;
     public Sprite flag;
-    
+    public GameObject particle;
+
     private SpriteRenderer sr;
     private Sprite blank;
 
@@ -47,8 +48,10 @@ public class BlockScript : MonoBehaviour {
     }
     
     public void LeftClick() {
-        if (sr.sprite.name != "blank" && sr.sprite.name != "flag")
+        if (sr.sprite.name != "blank"|| sr.sprite.name == "flag")
             return;
+
+        StartCoroutine(InstantiateParticle());
 
         sr.sprite = obj;
 
@@ -90,5 +93,13 @@ public class BlockScript : MonoBehaviour {
             if (s == "win")
                 sr.color = Color.green;
         }
+    }
+
+    private IEnumerator InstantiateParticle() {
+        GameObject p = Instantiate(particle, transform.position, Quaternion.identity);
+
+        yield return new WaitForSeconds(1f);
+
+        Destroy(p);
     }
 }
