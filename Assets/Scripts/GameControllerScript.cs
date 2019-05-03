@@ -10,11 +10,27 @@ public class GameControllerScript : MonoBehaviour {
     public GameObject blockPrefab;
 
     private int[,] grid;
+    public int bombCount = 0;
+    public int flags = 0;
+
+    public int timeCount = 0;
+    private float time = 0f;
 
     void Start() {
-        if(numBombs >= gridSize * gridSize)
-            Debug.LogError("grid muito pequeno para quantidade de bombas");
 
+        LoadMap();
+    }
+
+    private void Update() {
+        time += Time.deltaTime;
+
+        if (time >= 1f) {
+            timeCount++;
+            time = 0;
+        }
+    }
+
+    private void LoadMap() {
         CreateGrid();
 
         CreateMap();
@@ -69,17 +85,46 @@ public class GameControllerScript : MonoBehaviour {
     }
 
     public void RemoveFlag(Vector3 pos) {
-        if(grid[(int)pos.x, (int)pos.y] == 9)
+        flags--;
 
+        if (grid[(int)pos.x, (int)pos.y] == 9)
+            bombCount--;
     }
 
     public void SetFlag(Vector3 pos) {
+        flags++;
 
+        if (grid[(int)pos.x, (int)pos.y] == 9)
+            bombCount++;
+
+        if (bombCount == numBombs && bombCount == flags) {
+            BroadcastMessage("ShowBombBlocks", "win");
+            
+            StartCoroutine(RestartLevel(numBombs + 1));
+        }
+    }
+    
+    public void GameOver() {
+        BroadcastMessage("ShowBombBlocks","lose");
+
+        StartCoroutine(RestartLevel(1));
     }
 
-    public void GameOver() {
-        Debug.Log("GameOver");
+    private IEnumerator RestartLevel(int num) {
+        time = -3f;
 
-        BroadcastMessage("ShowBombBlocks");
+        yield return new WaitForSeconds(3f);
+
+        foreach (Transform child in transform)
+            GameObject.Destroy(child.gameObject);
+
+        numBombs = num;
+        bombCount = 0;
+        flags = 0;
+
+        if (num == 1)
+            timeCount = 0;
+
+        LoadMap();
     }
 }

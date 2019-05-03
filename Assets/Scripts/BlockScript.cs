@@ -39,7 +39,7 @@ public class BlockScript : MonoBehaviour {
             transform.parent.SendMessage("SetFlag", transform.position);
         }
 
-        else {
+        else if(sr.sprite == flag) {
             sr.sprite = blank;
 
             transform.parent.SendMessage("RemoveFlag", transform.position);
@@ -83,8 +83,12 @@ public class BlockScript : MonoBehaviour {
         obj = sprite;
     }
 
-    public void ShowBombBlocks() {
-        if(obj.name == "bomb")
+    public void ShowBombBlocks(string s) {
+        if (obj.name == "bomb") {
             sr.sprite = obj;
+
+            if (s == "win")
+                sr.color = Color.green;
+        }
     }
 }
