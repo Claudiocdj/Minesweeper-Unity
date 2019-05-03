@@ -24,9 +24,13 @@ public class BlockScript : MonoBehaviour {
         if (Input.GetMouseButtonDown(1) && mouseHere) RightClick();
     }
 
-    private void OnMouseEnter() { mouseHere = true; }
+    private void OnMouseEnter() {
+        mouseHere = true;
+    }
 
-    private void OnMouseExit() { mouseHere = false; }
+    private void OnMouseExit() {
+        mouseHere = false;
+    }
     
     private void RightClick() {
         if (sr.sprite == blank) {
@@ -41,8 +45,46 @@ public class BlockScript : MonoBehaviour {
             transform.parent.SendMessage("RemoveFlag", transform.position);
         }
     }
+    
+    public void LeftClick() {
+        if (sr.sprite.name != "blank" && sr.sprite.name != "flag")
+            return;
 
-    private void LeftClick() { sr.sprite = obj; }
+        sr.sprite = obj;
 
-    public void SetOcultSprite(Sprite sprite) { obj = sprite; }
+        if (obj.name == "0") {
+            Vector3 middle = new Vector3(0.5f, 0.5f);
+            Vector3[] points = new Vector3[8];
+
+            points[0] = transform.position + middle + Vector3.up;
+            points[1] = transform.position + middle + Vector3.left;
+            points[2] = transform.position + middle + Vector3.right;
+            points[3] = transform.position + middle + Vector3.down;
+            points[4] = points[0] + Vector3.left;
+            points[5] = points[0] + Vector3.right;
+            points[6] = points[3] + Vector3.left;
+            points[7] = points[3] + Vector3.right;
+
+            for (int i = 0; i < 8; i++) {
+                Collider2D n = Physics2D.OverlapCircle(points[i], 0.1f);
+
+                if (n != null) n.gameObject.GetComponent<BlockScript>().LeftClick();
+            }
+        }
+
+        else if (obj.name == "bomb") {
+            sr.color = Color.red;
+
+            transform.parent.SendMessage("GameOver");
+        }
+    }
+
+    public void SetOcultSprite(Sprite sprite) {
+        obj = sprite;
+    }
+
+    public void ShowBombBlocks() {
+        if(obj.name == "bomb")
+            sr.sprite = obj;
+    }
 }

@@ -68,11 +68,18 @@ public class GameControllerScript : MonoBehaviour {
             }
     }
 
-    public void RemoveFlag() {
+    public void RemoveFlag(Vector3 pos) {
+        if(grid[(int)pos.x, (int)pos.y] == 9)
 
     }
 
-    public void SetFlag() {
+    public void SetFlag(Vector3 pos) {
 
+    }
+
+    public void GameOver() {
+        Debug.Log("GameOver");
+
+        BroadcastMessage("ShowBombBlocks");
     }
 }
