@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class ScoreScript : MonoBehaviour {
 
     public Text time;
-    public Text level;
     public Text flags;
 
     private GameControllerScript gameController;
@@ -16,10 +15,8 @@ public class ScoreScript : MonoBehaviour {
     }
 
     void Update() {
-        time.text = gameController.timeCount.ToString();
-
-        level.text = gameController.numBombs.ToString();
-
-        flags.text = gameController.flags.ToString();
+        time.text = gameController.TimeCount.ToString();
+        
+        flags.text = (gameController.numBombs - gameController.Flags).ToString();
     }
 }
